@@ -1,10 +1,11 @@
-from flask import Flask, request, jsonify  
+from flask import Flask, request, jsonify, make_response
 import speech_recognition as sr
-
+from ibm_cloud import processTextCommand
+ 
 app = Flask( __name__ )
 r = sr.Recognizer()
 
-def SpeechToText(file):
+def speechToText(file):
     audioData = sr.AudioFile(file )
     with audioData as source:
         audio = r.record(audioData)
@@ -17,10 +18,24 @@ def SpeechToText(file):
 @app.route("/postAudio", methods = ["POST"])
 def recieveAudioData():
     audioData = request.files.get('audio')
+    res = {
+        "status" : "failure",
+        "message": "" 
+    }
+
     if audioData is None:
-        return jsonify({"status": "Failure", "message": "Missing File Data"})
-        
-    outputText = SpeechToText(audioData)
+        res["message"] = "Missing File Data"
+        return make_response(jsonify(res), 422)
     
-    return  jsonify({"status": "Success", "message": "File received"})
+    try:
+        outputText = speechToText(audioData)
+        processTextCommand(outputText)
+    except: 
+        res["message"] = "Error in processing command"
+        return make_response(jsonify(res), 503)
+
+
+    res["status"] = "success"
+    res["message"] = "File received"
+    return  make_response(jsonify(res), 202)
     
