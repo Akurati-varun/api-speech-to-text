@@ -6,15 +6,15 @@ import ibmiotf.device
 def processTextCommand(textCommand):
     
     # Implement cloud command functionality here
-    organization = "pn9oxd" 
+    organization = "qfdsxt" 
 
-    deviceType = "Varun" 
+    deviceType = "Team43" 
 
-    deviceId = "24062810" 
+    deviceId = "281099" 
 
     authMethod = "token" 
 
-    authToken = "&PPfTQV!s8c)996eZ)" 
+    authToken = "Ev(mK@RMepRIGE-Q0_" 
     deviceOptions = {"org": organization, "type": deviceType, "id": deviceId, "auth-method": authMethod, "auth-token": authToken,"clean-session":True} 
         
     deviceCli = ibmiotf.device.Client(deviceOptions)
