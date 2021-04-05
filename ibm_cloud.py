@@ -14,7 +14,7 @@ def processTextCommand(textCommand):
 
     authMethod = "token" 
 
-    authToken = "Ev(mK@RMepRIGE-Q0_" 
+    authToken = "Ev(mK@RMepRlGE-Q0_" 
     deviceOptions = {"org": organization, "type": deviceType, "id": deviceId, "auth-method": authMethod, "auth-token": authToken,"clean-session":True} 
         
     deviceCli = ibmiotf.device.Client(deviceOptions)
