@@ -1,19 +1,8 @@
 from flask import Flask, request, jsonify, make_response
-import speech_recognition as sr
 from ibm_cloud import processTextCommand
- 
-app = Flask( __name__ )
-r = sr.Recognizer()
+from speech_processing import speechToText
 
-def speechToText(file):
-    audioData = sr.AudioFile(file )
-    with audioData as source:
-        audio = r.record(audioData)
-    
-    outputText = r.recognize_google(audio) or "Failed"
-    
-    return outputText
-    
+app = Flask( __name__ )
 
 @app.route("/postAudio", methods = ["POST"])
 def recieveAudioData():
@@ -37,5 +26,6 @@ def recieveAudioData():
 
     res["status"] = "success"
     res["message"] = "File received"
+
     return  make_response(jsonify(res), 202)
     
