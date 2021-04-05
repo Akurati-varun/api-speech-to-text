@@ -1,10 +1,14 @@
-from flask import Flask, request, jsonify, make_response
+from flask import Flask, request, jsonify, make_response, render_template
 from ibm_cloud import processTextCommand
 from speech_processing import speechToText
 
 app = Flask( __name__ )
 
-@app.route("/postAudio", methods = ["POST"])
+@app.route("/")
+def index():
+    return render_template('index.html')
+
+@app.route("/api/postAudio", methods = ["POST"])
 def recieveAudioData():
     audioData = request.files.get('audio')
     res = {
