@@ -10,7 +10,11 @@ def index():
 
 @app.route("/api/postAudio", methods = ["POST"])
 def recieveAudioData():
+
     audioData = request.files.get('audio')
+    languageCode = request.form.get('language-code', 'en-US')
+    
+    print(audioData, languageCode)
     res = {
         "status" : "failure",
         "message": "",
@@ -22,9 +26,10 @@ def recieveAudioData():
         return make_response(jsonify(res), 422)
     
     try:
-        outputText = speechToText(audioData)
+        outputText = speechToText(audioData, languageCode)
         processTextCommand(outputText)
-    except: 
+    except Exception as e:
+        print(e)
         res["message"] = "Error in processing command"
         return make_response(jsonify(res), 503)
 
