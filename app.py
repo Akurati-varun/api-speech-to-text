@@ -6,7 +6,6 @@ app = Flask( __name__ )
 
 @app.route("/")
 def index():
-    print(request.headers)
     return render_template('index.html')
 
 @app.route("/api/postAudio", methods = ["POST"])
@@ -14,7 +13,8 @@ def recieveAudioData():
     audioData = request.files.get('audio')
     res = {
         "status" : "failure",
-        "message": "" 
+        "message": "",
+        "translation": ""
     }
 
     if audioData is None:
@@ -31,6 +31,7 @@ def recieveAudioData():
 
     res["status"] = "success"
     res["message"] = "File received"
+    res["translation"] = outputText
 
     return  make_response(jsonify(res), 202)
     
