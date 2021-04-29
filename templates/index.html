@@ -1,26 +1,17 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
-  <head>
+<head>
     <meta charset="utf-8">
-    <title>Home Automation</title>
+    <title>Prototype - Home Automation</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link rel='stylesheet' href="{{ url_for('static', filename='css/style.css') }}">
-  </head>
-  <body>
+</head>
+<body>
     <!-- Write code here -->
-        <form 
-        action = "/api/postAudio"
-          method="POST" enctype="multipart/form-data">
-        <input type="file" name="audio" id="audio">
-        <select name="language-code">
-            <option value="en-US">English(USA)</option>
-            <option value="en-UK">English(UK)</option>
-            <option value="en-IN">English(India)</option>
-            <option value="hi-IN">Hindi</option>
-        </select>
-        <input type="submit" value="submit">
-        </form>
+    <button id="recordButton">Record</button>
+    <button id="stopButton">Stop</button>
     <!-- Import Javascript Dependecies  -->
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-  </body>
+    <script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
+    <script src="{{ url_for('static', filename='js/record.js') }}"></script>
+</body>
 </html>
