@@ -1,7 +1,9 @@
 venv
 __pycache__
 .git
+*.log
 OSR_in_000_0063_8k.wav
 OSR_uk_000_0020_8k.wav
 speech.html
 speech.py
+.env

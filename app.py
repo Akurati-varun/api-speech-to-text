@@ -1,41 +1,53 @@
-from flask import Flask, request, jsonify, make_response
-import speech_recognition as sr
+from flask import Flask, request, jsonify, make_response, render_template
 from ibm_cloud import processTextCommand
- 
+from speech_processing import speechToText
+from speech_recognition import UnknownValueError
+
 app = Flask( __name__ )
-r = sr.Recognizer()
 
-def speechToText(file):
-    audioData = sr.AudioFile(file )
-    with audioData as source:
-        audio = r.record(audioData)
-    
-    outputText = r.recognize_google(audio) or "Failed"
-    
-    return outputText
-    
+@app.route("/")
+def index():
+    return render_template('index.html')
 
-@app.route("/postAudio", methods = ["POST"])
+
+
+@app.route("/api/postAudio", methods = ["POST", "GET"])
 def recieveAudioData():
+    if request.method == "GET":
+        return render_template("test.html")
+        
     audioData = request.files.get('audio')
+    languageCode = request.form.get('language-code', 'en-US')
+
+    print(audioData, languageCode)
     res = {
         "status" : "failure",
-        "message": "" 
+        "message": "Something went wrong while processing file",
+        "translation": ""
     }
+    status_code = 503
 
     if audioData is None:
         res["message"] = "Missing File Data"
-        return make_response(jsonify(res), 422)
+        status_code = 422
     
     try:
-        outputText = speechToText(audioData)
+        outputText = speechToText(audioData, languageCode)
         processTextCommand(outputText)
-    except: 
-        res["message"] = "Error in processing command"
-        return make_response(jsonify(res), 503)
-
-
-    res["status"] = "success"
-    res["message"] = "File received"
-    return  make_response(jsonify(res), 202)
+        res["status"] = "success"
+        res["message"] = "File received"
+        res["translation"] = outputText
+        status_code = 202
+    except ValueError as ve:
+        print("ValueError", ve)
+        res["message"] = "Invalid file format"
+        status_code = 415 
+    except UnknownValueError as uve:
+        print("Empty file/Unsupported Audio/No Voice", uve)
+    except:
+        pass
     
+    response = make_response(jsonify(res), status_code)
+    response.headers["Access-Control-Allow-Origin"] = "*" 
+    
+    return response
