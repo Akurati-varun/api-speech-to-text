@@ -1,17 +1,82 @@
 <!DOCTYPE html>
-<html lang="en" dir="ltr">
+<html>
 <head>
-    <meta charset="utf-8">
-    <title>Prototype - Home Automation</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link rel='stylesheet' href="{{ url_for('static', filename='css/style.css') }}">
+	<meta charset="utf-8">
+      <meta http-equiv="X-UA-Compatible" content="IE=edge">
+      <!-- mobile metas -->
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="viewport" content="initial-scale=1, maximum-scale=1">
+      <!-- site metas -->
+      <title>Prototype - Home Automation</title>
+      <meta name="keywords" content="">
+      <meta name="description" content="">
+      <meta name="author" content="">
+      <!-- bootstrap css -->
+      <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+      <!-- style css -->
+      <link rel='stylesheet' href="{{ url_for('static', filename='css/style.css') }}">
+      <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
 </head>
-<body>
-    <!-- Write code here -->
-    <button id="recordButton">Record</button>
-    <button id="stopButton">Stop</button>
-    <!-- Import Javascript Dependecies  -->
-    <script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
+<body class="main-layout">
+    <div class="collection_section layout_padding container-fluid" style="margin:0px; padding:0px;">
+        <div class="row">
+            <ul class="nav nav-pills col-lg-12">
+                <li class="active col-lg-6 col-sm-6 col-6" style="padding:0px;">
+                    <a href="#tab1" data-toggle="tab"><button class="btn b" style="font-size:20pt;">Video</button></a>
+                </li>
+                <li class="col-lg-6 col-sm-6 col-6" style="padding:0px;">
+                    <a href="#tab2" data-toggle="tab"><button class="btn b" style="font-size:20pt;">Chat</button></a>
+                </li>
+            </ul>
+        </div>
+        <hr>
+        <div class="tab-content clearfix">
+            <div class="tab-pane" id="tab1">
+                <div class="layout_padding gallery_section">
+                    <div class="container">
+                        <video></video>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane active" id="tab2">
+            	<div class="layout_padding gallery_section" style="padding:10%;">
+            		<div class="row">
+            			<div class="col-lg-6 col-md-6 col-sm-6 col-6">
+            				<button class="btn btn-lg b" id="recordButton" style="height:60px; font-size:18pt;">Start</button>
+            			</div>
+            			<br>
+            			<div class="col-lg-6 col-md-6 col-sm-6 col-6">
+            				<button class="btn btn-lg b" id="stopButton" style="height:60px; font-size: 18pt;">Stop</button>
+            			</div>
+            			<p style="display: none;">
+			                <audio id="recordedAudio"></audio>
+			            </p>
+                  <a id="audiofile" href="" download style="display: none;"></a>
+            		</div>
+            	</div>
+                <div class="layout_padding gallery_section" style="background-color: #131111;">
+                    <div class="container">
+                        <div class="row">
+                        	<div class="col-lg-9 col-md-9 col-sm-8">
+							  <input type="text" class="form-control" placeholder="Enter Your Text." style="height:60px;">
+							</div>
+                        	<div class="col-lg-3 col-md-3 col-sm-4">
+							  <button class="btn btn-lg sub" style="height:60px;">Submit</button>
+							</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+	<div class="copyright">2021 All Rights Reserved. <a href="https://html.design">Made by Team Tachyon</a></div>
+
+	    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/jquery-3.0.0.min.js') }}"></script>
+      <script src="{{ url_for('static', filename='js/plugin.js') }}"></script>
+      <!-- Import Javascript Dependecies  -->
+      <script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
     <script src="{{ url_for('static', filename='js/record.js') }}"></script>
 </body>
 </html>
