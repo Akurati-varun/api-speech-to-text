@@ -1,8 +1,8 @@
 from flask import Flask, request, jsonify, make_response, render_template
 from ibm_cloud import processTextCommand
-from speech_processing import speechToText
+from speech_processing import speechToText, translateText
 from speech_recognition import UnknownValueError
-from face_recognition import FacePrediction
+# from face_recognition import FacePrediction
 app = Flask( __name__ )
 
 @app.route("/")
@@ -14,7 +14,7 @@ def receiveImageData():
     ImageData = request.files['image']
     res = {
         "status" : "failure",
-        "message": "Error in processing Image",
+        "message": "Sorry Couldn't recognize you",
         "person" : ""
     }
     status_code=503
@@ -23,16 +23,17 @@ def receiveImageData():
         res["message"] = "Missing File Data"
         status_code=422
     
-    try:
-        identified_name= FacePrediction(ImageData)
-        res["status"] = "success"
-        res["message"] = "File received"
-        res["person"]=identified_name
-        status_code=202
+    # try:
+    identified_name= FacePrediction(ImageData)
+    res["status"] = "success"
+    res["message"] = "File received"
+    res["person"]=identified_name
+    # status_code=202
 
-    except Exception as ex:
-        res["error-type"]=ex.args
-        res["message"] = "Error in processing Image"
+    # except Exception as ex:
+        # res["error-type"]=ex.args
+        # print(ex)
+        # res["message"] = "Error in processing Image"
 
 
     response = make_response(jsonify(res), status_code)
@@ -63,18 +64,28 @@ def recieveAudioData():
     
     try:
         outputText = speechToText(audioData, languageCode)
+        
+        if not languageCode.startswith("en"):
+            language, country = languageCode.split("-")
+            outputText = translateText(outputText, language) 
+
         processTextCommand(outputText)
+        
         res["status"] = "success"
         res["message"] = "File received"
         res["translation"] = outputText
         status_code = 202
+    
     except ValueError as ve:
         print("ValueError", ve)
         res["message"] = "Invalid file format"
         status_code = 415 
+    
     except UnknownValueError as uve:
         print("Empty file/Unsupported Audio/No Voice", uve)
-    except:
+    
+    except Exception as e:
+        print("Other Error", e)
         pass
     
     response = make_response(jsonify(res), status_code)
