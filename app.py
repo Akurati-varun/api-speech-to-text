@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, make_response, render_template
-from ibm_cloud import processTextCommand, processImageData
+from ibm_cloud import processTextCommand
 from speech_processing import speechToText
 from speech_recognition import UnknownValueError
 from face_recognition import FacePrediction
@@ -14,7 +14,7 @@ def receiveImageData():
     ImageData = request.files['image']
     res = {
         "status" : "failure",
-        "message": "Sorry Couldn't recognize you",
+        "message": "Error in processing Image",
         "person" : ""
     }
     status_code=503
@@ -25,7 +25,6 @@ def receiveImageData():
     
     try:
         identified_name= FacePrediction(ImageData)
-        processImageData(identified_name)
         res["status"] = "success"
         res["message"] = "File received"
         res["person"]=identified_name
@@ -34,7 +33,6 @@ def receiveImageData():
     except Exception as ex:
         res["error-type"]=ex.args
         res["message"] = "Error in processing Image"
-        status_code=413
 
 
     response = make_response(jsonify(res), status_code)
