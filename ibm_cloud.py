@@ -21,3 +21,17 @@ def processTextCommand(textCommand):
     #dissconect from cloud
     deviceCli.disconnect()   
     
+def processImageData(person_name):
+    deviceOptions = IBMCloudCred.deviceOptions
+    
+    deviceCli = ibmiotf.device.Client(deviceOptions)
+    
+    #connect to the cloud
+    deviceCli.connect() 
+        
+    data1={"person":person_name}
+    #publish the event
+    deviceCli.publishEvent(event="facedetection",msgFormat="json",data=data1)
+    time.sleep(0.5)
+    #dissconect from cloud
+    deviceCli.disconnect()
