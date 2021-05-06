@@ -23,17 +23,16 @@ def receiveImageData():
         res["message"] = "Missing File Data"
         status_code=422
     
-    # try:
-    identified_name= FacePrediction(ImageData)
-    res["status"] = "success"
-    res["message"] = "File received"
-    res["person"]=identified_name
-    # status_code=202
-
-    # except Exception as ex:
-        # res["error-type"]=ex.args
-        # print(ex)
-        # res["message"] = "Error in processing Image"
+    try:
+        identified_name= FacePrediction(ImageData)
+        res["status"] = "success"
+        res["message"] = "File received"
+        res["person"]=identified_name
+        status_code=202
+    except Exception as ex:
+        res["error-type"]=ex.args
+        print("In receiveImageData except block: ", ex)
+        res["message"] = "Error in processing Image"
 
 
     response = make_response(jsonify(res), status_code)
