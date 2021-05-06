@@ -2,7 +2,7 @@ from flask import Flask, request, jsonify, make_response, render_template
 from ibm_cloud import processTextCommand
 from speech_processing import speechToText, translateText
 from speech_recognition import UnknownValueError
-# from face_recognition import FacePrediction
+from face_recognition import FacePrediction
 app = Flask( __name__ )
 
 @app.route("/")
