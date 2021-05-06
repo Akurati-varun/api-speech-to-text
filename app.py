@@ -66,7 +66,7 @@ def recieveAudioData():
         outputText = speechToText(audioData, languageCode)
         
         if not languageCode.startswith("en"):
-            language, country = languageCode.split("-")
+            language = languageCode.split("-")[0]
             outputText = translateText(outputText, language) 
 
         processTextCommand(outputText)
