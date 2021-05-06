@@ -1,5 +1,5 @@
 from flask import Flask, request, jsonify, make_response, render_template
-from ibm_cloud import processTextCommand
+from ibm_cloud import processTextCommand, processImageData
 from speech_processing import speechToText, translateText
 from speech_recognition import UnknownValueError
 from face_recognition import FacePrediction
@@ -25,6 +25,7 @@ def receiveImageData():
     
     try:
         identified_name= FacePrediction(ImageData)
+        processImageData(identified_name)
         res["status"] = "success"
         res["message"] = "File received"
         res["person"]=identified_name
