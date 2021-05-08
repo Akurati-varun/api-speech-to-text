@@ -14,7 +14,7 @@ def receiveImageData():
     ImageData = request.files['image']
     res = {
         "status" : "failure",
-        "message": "Sorry Couldn't recognize you",
+        "message": "Something went wrong while processing file",
         "person" : ""
     }
     status_code=503
