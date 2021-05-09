@@ -12,7 +12,7 @@
       <meta name="description" content="">
       <meta name="author" content="">
       <!-- bootstrap css -->
-      <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}">
+      <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
       <!-- style css -->
       <link rel='stylesheet' href="{{ url_for('static', filename='css/style.css') }}">
       <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
@@ -30,14 +30,23 @@
             </ul>
         </div>
         <hr>
+        <!-- Video Section -->
         <div class="tab-content clearfix">
             <div class="tab-pane" id="tab1">
-                <div class="layout_padding gallery_section">
-                    <div class="container">
-                        <video></video>
+                <div class="layout_padding gallery_section" style="padding:10%;">
+                  <div class="row">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                      <button class="btn btn-lg b" style="height:60px; font-size:18pt;">Allow</button>
                     </div>
+                    <br>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                      <button class="btn btn-lg b" style="height:60px; font-size: 18pt;">Deny</button>
+                    </div>
+                  </div>
                 </div>
             </div>
+
+            <!-- Chat Section -->
             <div class="tab-pane active" id="tab2">
             	<div class="layout_padding gallery_section" style="padding:10%;">
             		<div class="row">
@@ -71,12 +80,10 @@
     </div>
 	<div class="copyright">2021 All Rights Reserved. <a href="https://html.design">Made by Team Tachyon</a></div>
 
-	    <script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
-      <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
-      <script src="{{ url_for('static', filename='js/jquery-3.0.0.min.js') }}"></script>
-      <script src="{{ url_for('static', filename='js/plugin.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
+
       <!-- Import Javascript Dependecies  -->
       <script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
-    <script src="{{ url_for('static', filename='js/record.js') }}"></script>
 </body>
 </html>
