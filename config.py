@@ -3,6 +3,9 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
+class Config:
+    stream_url = getenv("streamURL")
+    
 class IBMCloudCred:
     organization = getenv("organization") 
     deviceType = getenv("deviceType") 
