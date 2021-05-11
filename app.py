@@ -65,10 +65,10 @@ def recieveCommandData():
         return render_template("test.html", stream_url = url)
         
     audioData = request.files.get('audio')
-    textCommand = request.form.get('text-command').strip() or None
+    textCommand = request.form.get('text-command', "").strip() or None
     languageCode = request.form.get('language-code', 'en-US').strip()
     
-    print(audioData, languageCode, dir(audioData), audioData.content_length)
+    print(audioData, languageCode)
     res = {
         "status" : "failure",
         "message": "Something went wrong while processing command",
@@ -115,5 +115,5 @@ def recieveCommandData():
     
     response = make_response(jsonify(res), status_code)
     response.headers["Access-Control-Allow-Origin"] = "*" 
-    
+    print(response)
     return response

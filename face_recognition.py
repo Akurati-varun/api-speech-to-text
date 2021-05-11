@@ -1,21 +1,19 @@
-from PIL import Image, ImageOps
-from keras import backend as K
-import numpy as np 
+from keras import backend as K 
 from keras.models import load_model
-import cv2 
+from keras_preprocessing import image
+import numpy as np 
+
+
 def FacePrediction(file):
-    #reading the file stream obj
-    og_image=Image.open(file.stream)
-    #converting it to grayscale
-    gray_image = ImageOps.grayscale(og_image)
+    
+    #reading the file stream and converting to greyscale
+    image_data = image.load_img(file,color_mode="grayscale", target_size=(90,90))
     #converting into array
-    img_array = np.array(gray_image)
-    #resizing 
-    new_array=cv2.resize(img_array,(90,90))
+    image_array=image.img_to_array(image_data)
     #reshaping the array
-    new_array=np.array(new_array).reshape(-1,90,90,1)
+    new_array=np.array(image_array).reshape(-1,90,90,1)
     #normalizing the data
-    new_array=new_array/255
+    new_array=new_array/255;
     
     #Before prediction
     K.clear_session()
@@ -34,11 +32,3 @@ def FacePrediction(file):
         return "Prajjwal"
     elif(result[0]==2):
         return "Akhil"
-    
-#    applying grayscale method
-   
-   
- 
-#     
-#     
-#     return result;
