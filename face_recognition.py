@@ -7,7 +7,8 @@ import numpy as np
 def FacePrediction(file):
     
     #reading the file stream and converting to greyscale
-    image_data = image.load_img(file,color_mode="grayscale", target_size=(90,90))
+    image_data=file.resize((90,90))
+
     #converting into array
     image_array=image.img_to_array(image_data)
     #reshaping the array
