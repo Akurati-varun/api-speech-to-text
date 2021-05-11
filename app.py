@@ -1,9 +1,9 @@
 from flask import Flask, request, jsonify, make_response, render_template
 from googletrans import LANGUAGES
+from speech_recognition import UnknownValueError
 
 from ibm_cloud import processTextCommand, processImageData
 from speech_processing import speechToText, translateText
-from speech_recognition import UnknownValueError
 from face_recognition import FacePrediction
 from config import Config
 
@@ -23,7 +23,8 @@ def validateLanguageCode(code):
     
 @app.route("/")
 def index():
-    return render_template('index.html')
+    url = Config.stream_url()
+    return render_template('index.html', stream_url=url)
 
 @app.route("/api/postImage", methods=["POST"])
 def receiveImageData():
@@ -40,7 +41,8 @@ def receiveImageData():
         status_code=422
     
     try:
-        identified_name= FacePrediction(ImageData)
+        
+        identified_name= FacePrediction(ImageData.read())
         processImageData(identified_name)
         res["status"] = "success"
         res["message"] = "File received"
@@ -59,9 +61,9 @@ def receiveImageData():
 
 
 @app.route("/api/postCommand", methods = ["POST", "GET"])
-def recieveCommandData():
+def receiveCommandData():
     if request.method == "GET":
-        url = request.args.get('url') or Config.stream_url
+        url = request.args.get('url') or Config.stream_url()
         return render_template("test.html", stream_url = url)
         
     audioData = request.files.get('audio')
