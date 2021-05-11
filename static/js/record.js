@@ -23,7 +23,7 @@ function startRecording() {
 		Simple constraints object, for more advanced audio features see
 		https://addpipe.com/blog/audio-constraints-getusermedia/
 	*/
-
+    
     var constraints = { audio: true, video:false }
 
  	/*
@@ -32,7 +32,7 @@ function startRecording() {
 
 	recordButton.disabled = true;
 	stopButton.disabled = false;
-
+	
 	/*
     	We're using the standard promise based getUserMedia() 
     	https://developer.mozilla.org/en-US/docs/Web/API/MediaDevices/getUserMedia
@@ -45,6 +45,7 @@ function startRecording() {
 			create an audio context after getUserMedia is called
 			sampleRate might change after getUserMedia is called, like it does on macOS when recording through AirPods
 			the sampleRate defaults to the one set in your OS for your playback device
+
 		*/
 		audioContext = new AudioContext();
 
@@ -53,7 +54,7 @@ function startRecording() {
 
 		/*  assign to gumStream for later use  */
 		gumStream = stream;
-
+		
 		/* use the stream */
 		input = audioContext.createMediaStreamSource(stream);
 
@@ -66,7 +67,7 @@ function startRecording() {
 		//start the recording process
 		rec.record()
         setTimeout( limitRecording, 15000 );
-
+		
         console.log("Recording started");
 
 	}).catch(function(err) {
@@ -82,7 +83,7 @@ function stopRecording() {
 	//disable the stop button, enable the record too allow for new recordings
 	stopButton.disabled = true;
 	recordButton.disabled = false;
-
+	
 	//tell the recorder to stop the recording
 	rec.stop();
 
@@ -92,7 +93,7 @@ function stopRecording() {
 	//create the wav blob and pass it on to createDownloadLink
 	rec.exportWAV(sendData);
 }
-
+ 
 function limitRecording() {
     if (rec.recording){
         stopRecording();
@@ -102,8 +103,10 @@ function limitRecording() {
 function sendData(data) {
     let formData = new FormData();
     let request = new XMLHttpRequest();
-
+        
     formData.append("audio", data)
     request.open("POST", "/api/postAudio");
     request.send(formData);
 }
+
+

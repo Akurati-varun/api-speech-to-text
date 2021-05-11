@@ -6,16 +6,24 @@
   </head>
   <body>
     <!-- Write code here -->
+        <p><a href="{{ stream_url }}">{{stream_url}}</a></p>
         <form 
-        action = "/api/postAudio"
+        action = "/api/postCommand"
           method="POST" enctype="multipart/form-data">
+        <label for="audio">File Upload</label>
         <input type="file" name="audio" id="audio">
-        <select name="language-code">
-            <option value="en-US">English(USA)</option>
-            <option value="en-UK">English(UK)</option>
-            <option value="en-IN">English(India)</option>
-            <option value="hi-IN">Hindi</option>
-        </select>
+        <!-- <select name="language-code"> -->
+            <!-- <option value="en-US">English(USA)</option> -->
+            <!-- <option value="en-UK">English(UK)</option> -->
+            <!-- <option value="en-IN">English(India)</option> -->
+            <!-- <option value="hi-IN">Hindi</option> -->
+        <!-- </select> -->
+        <br><br>
+        <label for="command">Text Command</label>
+        <input type="text" name="text-command" id="command">
+        <br><br>
+        <label for="lCode">Language Code</label>
+        <input type="text" name="language-code" id="lCode">
         <input type="submit" value="submit">
         </form>
 
