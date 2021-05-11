@@ -6,6 +6,7 @@ from speech_processing import speechToText, translateText
 from speech_recognition import UnknownValueError
 from face_recognition import FacePrediction
 from config import Config
+from PIL import Image,ImageOps
 
 app = Flask( __name__ )
 
@@ -28,6 +29,9 @@ def index():
 @app.route("/api/postImage", methods=["POST"])
 def receiveImageData():
     ImageData = request.files['image']
+    image = Image.open(ImageData)
+    gray_image= ImageOps.grayscale(image)
+
     res = {
         "status" : "failure",
         "message": "Something went wrong while processing file",
@@ -40,7 +44,7 @@ def receiveImageData():
         status_code=422
     
     try:
-        identified_name= FacePrediction(ImageData)
+        identified_name= FacePrediction(gray_image)
         processImageData(identified_name)
         res["status"] = "success"
         res["message"] = "File received"
