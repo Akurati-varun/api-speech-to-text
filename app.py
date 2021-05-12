@@ -1,12 +1,11 @@
 from flask import Flask, request, jsonify, make_response, render_template
 from googletrans import LANGUAGES
+from speech_recognition import UnknownValueError
 
 from ibm_cloud import processTextCommand, processImageData
 from speech_processing import speechToText, translateText
-from speech_recognition import UnknownValueError
 from face_recognition import FacePrediction
 from config import Config
-from PIL import Image,ImageOps
 
 app = Flask( __name__ )
 
@@ -24,13 +23,14 @@ def validateLanguageCode(code):
     
 @app.route("/")
 def index():
-    return render_template('index.html')
+    url = Config.stream_url()
+    return render_template('index.html', stream_url=url)
 
 @app.route("/api/postImage", methods=["POST"])
 def receiveImageData():
-    ImageData = request.files['image']
-    image = Image.open(ImageData)
-    gray_image = ImageOps.grayscale(image)
+    imageData = request.files.get('image')
+    imageï¿½=ï¿½Image.open(imageData)
+ï¿½ï¿½ï¿½ï¿½gray_imageï¿½=ï¿½ImageOps.grayscale(image)
 
     res = {
         "status" : "failure",
@@ -39,12 +39,13 @@ def receiveImageData():
     }
     status_code=503
 
-    if ImageData is None:
+    if imageData is None:
         res["message"] = "Missing File Data"
         status_code=422
     
-    try:
-        identified_name= FacePrediction(gray_image)
+    try:        
+        identified_name= FacePrediction(imageData)
+        
         processImageData(identified_name)
         res["status"] = "success"
         res["message"] = "File received"
@@ -63,16 +64,16 @@ def receiveImageData():
 
 
 @app.route("/api/postCommand", methods = ["POST", "GET"])
-def recieveCommandData():
+def receiveCommandData():
     if request.method == "GET":
-        url = request.args.get('url') or Config.stream_url
+        url = request.args.get('url') or Config.stream_url()
         return render_template("test.html", stream_url = url)
         
     audioData = request.files.get('audio')
-    textCommand = request.form.get('text-command').strip() or None
+    textCommand = request.form.get('text-command', "").strip() or None
     languageCode = request.form.get('language-code', 'en-US').strip()
     
-    print(audioData, languageCode, dir(audioData), audioData.content_length)
+    print(audioData, languageCode)
     res = {
         "status" : "failure",
         "message": "Something went wrong while processing command",
@@ -121,3 +122,4 @@ def recieveCommandData():
     response.headers["Access-Control-Allow-Origin"] = "*" 
     
     return response
+
