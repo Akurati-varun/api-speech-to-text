@@ -1,12 +1,15 @@
+import numpy as np 
 from keras import backend as K 
 from keras.models import load_model
 from keras_preprocessing import image
-import numpy as np 
-
+from PIL import Image, ImageOps
 
 def FacePrediction(file):
     
     #reading the file stream and converting to greyscale
+    file = Image.open( file )
+    file = ImageOps.grayscale( image )
+
     image_data=file.resize((90,90))
 
     #converting into array
