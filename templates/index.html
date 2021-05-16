@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<meta charset="utf-8">
+  <meta charset="utf-8">
       <meta http-equiv="X-UA-Compatible" content="IE=edge">
       <!-- mobile metas -->
       <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -14,10 +14,17 @@
       <!-- bootstrap css -->
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
       <!-- style css -->
+      <!-- <link rel='stylesheet' href="../static/css/style.css"> -->
       <link rel='stylesheet' href="{{ url_for('static', filename='css/style.css') }}">
       <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css">
+      <script>
+        function hide(){
+        document.getElementById('alert_box').style.display = 'none';
+        }
+      </script>
 </head>
-<body class="main-layout">
+
+<body class="main-layout mt-5" style="max-width: 800px; min-width: 400px; margin:auto;">
     <div class="collection_section layout_padding container-fluid" style="margin:0px; padding:0px;">
         <div class="row">
             <ul class="nav nav-pills col-lg-12">
@@ -29,18 +36,32 @@
                 </li>
             </ul>
         </div>
+                                <div class="justify-content-center my-3" id="alert_box" style="display:none;">
+                                    <div class="alert alert-dismissible fade show" role="alert" style="width: 50%; min-width:300px; background-color: #131111; color:white; border-color:#131111;">
+                                        <strong style="font-size: 1.5rem;" id="alert_status"></strong>
+                                        <button type="button" class="close" onclick="hide()">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                        <br>
+                                        <span id="alert_message" style="font-size:1rem;"></span>
+
+                                    </div>
+                                </div>
         <hr>
         <!-- Video Section -->
         <div class="tab-content clearfix">
             <div class="tab-pane" id="tab1">
+              <div class="layout_padding gallery_section text-center" style="background-color: #131111;height:300px; padding: 20px; display: none;" id="streamcontainer">
+                <img src="" data-src="{{ stream_url }}" id="stream" alt="Stream to play here." style="height: 250px;">
+              </div>
                 <div class="layout_padding gallery_section" style="padding:10%;">
                   <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-6 col-6">
-                      <button class="btn btn-lg b" style="height:60px; font-size:18pt;">Allow</button>
+                      <button class="btn btn-lg b" style="height:60px; font-size:18pt;" onclick="Message('start')">Start Stream</button>
                     </div>
                     <br>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-6">
-                      <button class="btn btn-lg b" style="height:60px; font-size: 18pt;">Deny</button>
+                      <button class="btn btn-lg b" style="height:60px; font-size: 18pt;" onclick="Message('stop')">Stop Stream</button>
                     </div>
                   </div>
                 </div>
@@ -48,43 +69,73 @@
 
             <!-- Chat Section -->
             <div class="tab-pane active" id="tab2">
-            	<div class="layout_padding gallery_section" style="padding:10%;">
-            		<div class="row">
-            			<div class="col-lg-6 col-md-6 col-sm-6 col-6">
-            				<button class="btn btn-lg b" id="recordButton" style="height:60px; font-size:18pt;">Start</button>
-            			</div>
-            			<br>
-            			<div class="col-lg-6 col-md-6 col-sm-6 col-6">
-            				<button class="btn btn-lg b" id="stopButton" style="height:60px; font-size: 18pt;">Stop</button>
-            			</div>
-            			<p style="display: none;">
-			                <audio id="recordedAudio"></audio>
-			            </p>
-                  <a id="audiofile" href="" download style="display: none;"></a>
-            		</div>
-            	</div>
+              <div class="layout_padding gallery_section" style="padding:8%;">
+                <div class="row">
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                    <button class="btn btn-lg b" id="recordButton" style="height:60px; font-size:18pt;">Start</button>
+                  </div>
+                  <br>
+                  <div class="col-lg-6 col-md-6 col-sm-6 col-6">
+                    <button class="btn btn-lg b" id="stopButton" style="height:60px; font-size: 18pt;" disabled>Stop</button>
+                  </div>
+                </div>
+              </div>
                 <div class="layout_padding gallery_section" style="background-color: #131111;">
+                    <form  method="POST" onsubmit="return sendData()">
                     <div class="container">
                         <div class="row">
-                        	<div class="col-lg-9 col-md-9 col-sm-8">
-							  <input type="text" class="form-control" placeholder="Enter Your Text." style="height:60px;">
-							</div>
-                        	<div class="col-lg-3 col-md-3 col-sm-4">
-							  <button class="btn btn-lg sub" style="height:60px;">Submit</button>
-							</div>
+                          <div class="col-lg-9 col-md-9 col-sm-8">
+                            <input type="text" class="form-control" id="textMessage" placeholder="Enter Your Text." style="height:60px;">
+                          </div>
+                          <div class="col-lg-3 col-md-3 col-sm-4">
+                            <button type="submit" class="btn btn-lg sub" style="height:60px;">Submit</button>
+                          </div>
                         </div>
                     </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
-	<div class="copyright">2021 All Rights Reserved. <a href="#">Made by Team Tachyon</a></div>
+  <div class="copyright">2021 All Rights Reserved. <a href="#">Made by Team Tachyon</a></div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx" crossorigin="anonymous"></script>
 
       <!-- Import Javascript Dependecies  -->
       <script src="https://cdn.rawgit.com/mattdiamond/Recorderjs/08e7abd9/dist/recorder.js"></script>
-      <script src="{{url_for('static', filename='js/record.js')}}"></script>
+      <script src="{{ url_for('static', filename='js/record.js') }}"></script>
+      <!-- <script src="../static/js/record.js"></script> -->
+
+      <script type="text/javascript">
+
+        var postURL = "{{ url_for('receiveCommandData') }}" ;
+        //var postURL = "https://api-speech-to-text.herokuapp.com/api/postCommand" ;
+      </script>
+      <script type="text/javascript">
+        function Message(cmd)
+        {
+          if(cmd=="start")
+          {
+            streamURL = document.getElementById("stream").dataset.src;
+            
+            document.getElementById("stream").src=streamURL;
+            document.getElementById('streamcontainer').style.display="block";
+          }
+          else{
+             var content="";
+            document.getElementById('streamcontainer').style.display="none";
+            document.getElementById("stream").src=content;
+          }
+          const Http = new XMLHttpRequest();
+          const url='https://mandeyidi.eu-gb.cf.appdomain.cloud/allowdeny?command='+cmd;
+          Http.open("GET", url);
+          Http.send();
+
+          Http.onreadystatechange = (e) => {
+            console.log(Http.responseText)
+          }
+        }
+      </script>
 </body>
 </html>
