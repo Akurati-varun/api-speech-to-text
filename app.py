@@ -1,16 +1,18 @@
 from flask import Flask, request, jsonify, make_response, render_template
 from googletrans import LANGUAGES
+from speech_recognition import UnknownValueError
+from PIL import Image, ImageOps
 
 from ibm_cloud import processTextCommand, processImageData
 from speech_processing import speechToText, translateText
-from speech_recognition import UnknownValueError
 from face_recognition import FacePrediction
 from config import Config
 from PIL import Image,ImageOps
 
+
 app = Flask( __name__ )
 
-def validateAudioFile(file):
+def validateFile(file):
     if file and file.name.strip() != '':
         return True
     return False
@@ -24,14 +26,19 @@ def validateLanguageCode(code):
     
 @app.route("/")
 def index():
-    return render_template('index.html')
+    url = Config.stream_url()
+    return render_template('index.html', stream_url=url)
 
 @app.route("/api/postImage", methods=["POST"])
 def receiveImageData():
+<<<<<<< HEAD
     ImageData = request.files['image']
     image = Image.open(ImageData)
     gray_image = ImageOps.grayscale(image)
 
+=======
+    imageData = request.files.get("image")
+>>>>>>> 8ed54d0fc9ea22cb5e86f917d923b60a3d2d893b
     res = {
         "status" : "failure",
         "message": "Something went wrong while processing file",
@@ -39,12 +46,19 @@ def receiveImageData():
     }
     status_code=503
 
-    if ImageData is None:
+    if validateFile(imageData):
         res["message"] = "Missing File Data"
         status_code=422
     
     try:
+<<<<<<< HEAD
         identified_name= FacePrediction(gray_image)
+=======
+        imageData = Image.open(imageData)
+        imageData = ImageOps.grayscale(imageData)
+        
+        identified_name= FacePrediction(imageData)
+>>>>>>> 8ed54d0fc9ea22cb5e86f917d923b60a3d2d893b
         processImageData(identified_name)
         res["status"] = "success"
         res["message"] = "File received"
@@ -63,16 +77,16 @@ def receiveImageData():
 
 
 @app.route("/api/postCommand", methods = ["POST", "GET"])
-def recieveCommandData():
+def receiveCommandData():
     if request.method == "GET":
-        url = request.args.get('url') or Config.stream_url
+        url = request.args.get('url') or Config.stream_url()
         return render_template("test.html", stream_url = url)
         
     audioData = request.files.get('audio')
-    textCommand = request.form.get('text-command').strip() or None
+    textCommand = request.form.get('text-command', "").strip() or None
     languageCode = request.form.get('language-code', 'en-US').strip()
     
-    print(audioData, languageCode, dir(audioData), audioData.content_length)
+    print(audioData, languageCode)
     res = {
         "status" : "failure",
         "message": "Something went wrong while processing command",
@@ -85,7 +99,7 @@ def recieveCommandData():
         res["warnings"].append("Missing or Invalid Language Code using default code 'en-US'")
         languageCode = "en-US"
     
-    if not validateAudioFile(audioData) and textCommand is None:
+    if not validateFile(audioData) and textCommand is None:
         res["message"] = "Missing or Invalid audio file/text command."
         status_code = 422
     else:
@@ -119,5 +133,10 @@ def recieveCommandData():
     
     response = make_response(jsonify(res), status_code)
     response.headers["Access-Control-Allow-Origin"] = "*" 
+<<<<<<< HEAD
     
     return response
+=======
+    print(response)
+    return response
+>>>>>>> 8ed54d0fc9ea22cb5e86f917d923b60a3d2d893b

@@ -4,7 +4,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 class Config:
-    stream_url = getenv("streamURL")
+    stream_url = lambda :getenv("streamURL")
     
 class IBMCloudCred:
     organization = getenv("organization") 
