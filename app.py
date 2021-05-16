@@ -1,13 +1,15 @@
 from flask import Flask, request, jsonify, make_response, render_template
 from googletrans import LANGUAGES
 from speech_recognition import UnknownValueError
+<<<<<<< HEAD
 from PIL import Image, ImageOps
+=======
+>>>>>>> c057e58b027924cbb5ec0a02c89952b0b9e4c992
 
 from ibm_cloud import processTextCommand, processImageData
 from speech_processing import speechToText, translateText
 from face_recognition import FacePrediction
 from config import Config
-from PIL import Image,ImageOps
 
 
 app = Flask( __name__ )
@@ -32,9 +34,15 @@ def index():
 @app.route("/api/postImage", methods=["POST"])
 def receiveImageData():
 <<<<<<< HEAD
+<<<<<<< HEAD
     ImageData = request.files['image']
     image = Image.open(ImageData)
     gray_image = ImageOps.grayscale(image)
+=======
+    imageData = request.files.get('image')
+    imageï¿½=ï¿½Image.open(imageData)
+ï¿½ï¿½ï¿½ï¿½gray_imageï¿½=ï¿½ImageOps.grayscale(image)
+>>>>>>> c057e58b027924cbb5ec0a02c89952b0b9e4c992
 
 =======
     imageData = request.files.get("image")
@@ -46,6 +54,7 @@ def receiveImageData():
     }
     status_code=503
 
+<<<<<<< HEAD
     if validateFile(imageData):
         res["message"] = "Missing File Data"
         status_code=422
@@ -59,6 +68,15 @@ def receiveImageData():
         
         identified_name= FacePrediction(imageData)
 >>>>>>> 8ed54d0fc9ea22cb5e86f917d923b60a3d2d893b
+=======
+    if imageData is None:
+        res["message"] = "Missing File Data"
+        status_code=422
+    
+    try:        
+        identified_name= FacePrediction(imageData)
+        
+>>>>>>> c057e58b027924cbb5ec0a02c89952b0b9e4c992
         processImageData(identified_name)
         res["status"] = "success"
         res["message"] = "File received"
@@ -136,7 +154,11 @@ def receiveCommandData():
 <<<<<<< HEAD
     
     return response
+<<<<<<< HEAD
 =======
     print(response)
     return response
 >>>>>>> 8ed54d0fc9ea22cb5e86f917d923b60a3d2d893b
+=======
+
+>>>>>>> c057e58b027924cbb5ec0a02c89952b0b9e4c992

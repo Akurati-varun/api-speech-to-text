@@ -131,4 +131,8 @@ function sendData(data) {
     request.open("POST", postURL);
     request.send(formData);
     return false;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> c057e58b027924cbb5ec0a02c89952b0b9e4c992
